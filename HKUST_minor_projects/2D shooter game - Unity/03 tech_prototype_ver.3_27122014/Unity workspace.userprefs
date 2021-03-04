@@ -1,0 +1,17 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Weapon.cs">
+    <Files>
+      <File FileName="Assets\AICombatUnitControl.cs" Line="22" Column="2" />
+      <File FileName="..\Unity Project Build version\build_prototype_ver.1_13122014\Assets\CameraPIDControl.js" Line="18" Column="2" />
+      <File FileName="Assets\Weapon.cs" Line="171" Column="51" />
+      <File FileName="Assets\GameMaster.cs" Line="18" Column="3" />
+      <File FileName="Assets\VulnerableUnit.cs" Line="14" Column="13" />
+      <File FileName="Assets\UserControl.cs" Line="14" Column="14" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
