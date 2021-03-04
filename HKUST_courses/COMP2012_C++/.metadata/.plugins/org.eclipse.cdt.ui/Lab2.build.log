@@ -1,0 +1,9 @@
+17:28:44 **** Rebuild of configuration Debug for project Lab2 ****
+Info: Internal Builder is used for build
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\Polygon.o" "..\\src\\Polygon.cpp" 
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\Point.o" "..\\src\\Point.cpp" 
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\Lab2.o" "..\\src\\Lab2.cpp" 
+g++ -o Lab2.exe "src\\Polygon.o" "src\\Point.o" "src\\Lab2.o" 
+
+17:28:48 Build Finished (took 3s.509ms)
+

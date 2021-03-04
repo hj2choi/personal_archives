@@ -1,0 +1,11 @@
+11:05:44 **** Incremental Build of configuration Debug for project ExpressionTree ****
+Info: Internal Builder is used for build
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\ExpressionTree.o" "..\\src\\ExpressionTree.cpp" 
+..\src\ExpressionTree.cpp: In function 'int operation(char, int, int)':
+..\src\ExpressionTree.cpp:29:1: warning: control reaches end of non-void function [-Wreturn-type]
+ }
+ ^
+g++ -o ExpressionTree.exe "src\\Matrix.o" "src\\ExpressionTree.o" 
+
+11:05:45 Build Finished (took 900ms)
+

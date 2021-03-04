@@ -1,0 +1,14 @@
+#data segment
+.data
+msg: .asciiz "Hello world!"
+
+#text segment
+.text
+
+.globl main
+main:
+
+# Program starts
+li $v0, 4
+la $a0, msg
+syscall

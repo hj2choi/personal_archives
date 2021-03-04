@@ -1,0 +1,10 @@
+10:22:54 **** Rebuild of configuration Debug for project Sample ****
+Info: Internal Builder is used for build
+g++ -std=c++0x -pthread -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\Deck.o" "..\\src\\Deck.cpp" 
+g++ -std=c++0x -pthread -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\Sample.o" "..\\src\\Sample.cpp" 
+g++ -std=c++0x -pthread -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\Player.o" "..\\src\\Player.cpp" 
+g++ -std=c++0x -pthread -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\Card.o" "..\\src\\Card.cpp" 
+g++ -o Sample.exe "src\\Sample.o" "src\\Player.o" "src\\Deck.o" "src\\Card.o" 
+
+10:22:56 Build Finished (took 2s.692ms)
+

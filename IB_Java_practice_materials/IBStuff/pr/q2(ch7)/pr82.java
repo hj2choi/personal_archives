@@ -1,0 +1,27 @@
+/*
+Change the program so that it will find 4 numbers with the above property – that any two of
+them multiply together to make a number one less than a perfect square. (need to loop to
+200 to find one answer)
+*/
+public class pr82 extends IBIO
+{
+	static boolean good(int a, int b)
+	{
+		int x = a*b+1;
+		int y = (int)(Math.sqrt(x)+.5);
+		return (y*y == x);
+	}
+    public static void main (String args [] )
+    {
+		for (int i=1;i<200;i++)
+			for (int j=1;j<200;j++)
+				for (int k=1;k<200;k++)
+					for (int l=1;l<200;l++)
+						if (good(i,j) && good(j,k) && good(i,k) && good(i,l) && good(j,l) && good(k,l))
+							if (i<j && j<k && k<l)				//rejecting duplicates
+								output(i+"    "+j+"    "+k+"    "+l);
+    }
+}
+/*
+1    3    8    120
+*/

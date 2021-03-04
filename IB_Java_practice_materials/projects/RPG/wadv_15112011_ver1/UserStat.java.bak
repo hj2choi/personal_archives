@@ -1,0 +1,14 @@
+class UserStat
+{
+	wadv main = new wadv();
+	System.out.println(main.as);
+	UserStat()
+	{
+
+	}
+	void print()
+	{
+	}
+	
+}
+

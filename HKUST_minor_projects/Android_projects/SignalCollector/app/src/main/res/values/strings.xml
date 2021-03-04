@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">SignalCollector</string>
+    <string name="cellular">Cellular</string>
+    <string name="wifi">Wi-Fi</string>
+    <string name="magnetic">Magnetic</string>
+    <string name="accelerometer">Accelerometer</string>
+    <string name="gyroscope">Gyroscope</string>
+    <string name="gravity">Gravity</string>
+    <string name="compass">Compass</string>
+    <string name="pedometer">Pedometer</string>
+    <string name="barometer">Barometer</string>
+    <string name="gps">GPS</string>
+    <string name="camera">Camera</string>
+    <string name="action_websearch">Web search</string>
+    <string name="app_not_available">Sorry, there\'s no web browser available</string>
+
+</resources>

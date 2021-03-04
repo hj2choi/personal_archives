@@ -1,0 +1,5 @@
+#!/bin/bash
+
+### Go directly to the java folder when starting the Terminal:
+cd ~/Desktop/java
+pwd

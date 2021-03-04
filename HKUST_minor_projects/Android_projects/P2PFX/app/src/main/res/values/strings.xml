@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">PeerToPeerForeignExchange</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string-array name="Currency">
+        <item> CNY </item>
+        <item> Won </item>
+        <item> SGD </item>
+        <item> USD </item>
+    </string-array>
+</resources>

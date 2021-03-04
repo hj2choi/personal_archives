@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="G:\Programs\Android SDK\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67">
+        <dex dex="G:\Workspace\Android_workspace\STA AirshipController\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-53537b0b5781b60d7a30b34e8b9e6923f1b094bc.jar" />
+    </item>
+
+</items>

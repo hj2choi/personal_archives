@@ -1,0 +1,14 @@
+G:\Workspace\COMP4431\Lab08\bin\image_processing.exe
+G:\Workspace\COMP4431\Lab08\bin\image_processing.pdb
+G:\Workspace\COMP4431\Lab08\bin\image_processing.xml
+G:\Workspace\COMP4431\Lab08\obj\Debug\image_processing.frmGhost.resources
+G:\Workspace\COMP4431\Lab08\obj\Debug\image_processing.frmEdge.resources
+G:\Workspace\COMP4431\Lab08\obj\Debug\image_processing.frmBlur.resources
+G:\Workspace\COMP4431\Lab08\obj\Debug\image_processing.frmHistogram.resources
+G:\Workspace\COMP4431\Lab08\obj\Debug\image_processing.frmEffect.resources
+G:\Workspace\COMP4431\Lab08\obj\Debug\image_processing.frmMain.resources
+G:\Workspace\COMP4431\Lab08\obj\Debug\image_processing.frmImage.resources
+G:\Workspace\COMP4431\Lab08\obj\Debug\image_processing.vbproj.GenerateResource.Cache
+G:\Workspace\COMP4431\Lab08\obj\Debug\image_processing.exe
+G:\Workspace\COMP4431\Lab08\obj\Debug\image_processing.xml
+G:\Workspace\COMP4431\Lab08\obj\Debug\image_processing.pdb

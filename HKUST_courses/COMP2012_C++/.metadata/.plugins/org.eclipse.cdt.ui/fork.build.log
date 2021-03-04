@@ -1,0 +1,14 @@
+15:31:25 **** Incremental Build of configuration Debug for project fork ****
+Info: Internal Builder is used for build
+gcc -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\fork.o" "..\\src\\fork.c" 
+..\src\fork.c: In function 'main':
+..\src\fork.c:19:2: warning: implicit declaration of function 'fork' [-Wimplicit-function-declaration]
+  pid_t pid = fork();
+  ^
+gcc -o fork.exe "src\\fork.o" 
+src\fork.o: In function `main':
+G:\Workspace\COMP2012\fork\Debug/../src/fork.c:19: undefined reference to `fork'
+collect2.exe: error: ld returned 1 exit status
+
+15:31:25 Build Finished (took 475ms)
+

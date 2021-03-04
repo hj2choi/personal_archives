@@ -1,0 +1,24 @@
+/*
+Write a program that will find all the numbers less than 100 that have the property that
+a2 + b2 = c2. (100 possible answers)
+*/
+public class pr83 extends IBIO
+{
+	static boolean chk(int a,int b)		//check if a^2+b^2=c^2
+	{
+		int x = (a*a)+(b*b);
+		double y = Math.sqrt(x);
+		return (x == ((int)y*(int)y));
+	}
+	public static void main (String [] args)
+	{
+		for (int i = 1;i<100;i++)
+		{
+			for (int j=1;j<100;j++)
+			{
+				if (chk(i,j))
+					System.out.println(i+"^2 + "+j+"^2 = "+(int)(Math.sqrt((i*i)+(j*j)))+"^2");
+			}
+		}
+	}
+}

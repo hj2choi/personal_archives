@@ -1,0 +1,19 @@
+17:48:01 **** Incremental Build of configuration Debug for project Lab7 ****
+Info: Internal Builder is used for build
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\Lab7.o" "..\\src\\Lab7.cpp" 
+In file included from c:\mingw\lib\gcc\mingw32\4.8.1\include\c++\algorithm:62:0,
+                 from ..\src\Lab7.cpp:10:
+c:\mingw\lib\gcc\mingw32\4.8.1\include\c++\bits\stl_algo.h: In instantiation of '_OIter std::set_union(_IIter1, _IIter1, _IIter2, _IIter2, _OIter) [with _IIter1 = std::_Rb_tree_const_iterator<std::basic_string<char> >; _IIter2 = std::_Rb_tree_const_iterator<std::basic_string<char> >; _OIter = std::_Rb_tree_const_iterator<std::basic_string<char> >]':
+..\src\Lab7.cpp:65:46:   required from here
+c:\mingw\lib\gcc\mingw32\4.8.1\include\c++\bits\stl_algo.h:5777:18: error: passing 'const std::basic_string<char>' as 'this' argument of 'std::basic_string<_CharT, _Traits, _Alloc>& std::basic_string<_CharT, _Traits, _Alloc>::operator=(const std::basic_string<_CharT, _Traits, _Alloc>&) [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]' discards qualifiers [-fpermissive]
+        *__result = *__first1;
+                  ^
+c:\mingw\lib\gcc\mingw32\4.8.1\include\c++\bits\stl_algo.h:5782:18: error: passing 'const std::basic_string<char>' as 'this' argument of 'std::basic_string<_CharT, _Traits, _Alloc>& std::basic_string<_CharT, _Traits, _Alloc>::operator=(const std::basic_string<_CharT, _Traits, _Alloc>&) [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]' discards qualifiers [-fpermissive]
+        *__result = *__first2;
+                  ^
+c:\mingw\lib\gcc\mingw32\4.8.1\include\c++\bits\stl_algo.h:5787:18: error: passing 'const std::basic_string<char>' as 'this' argument of 'std::basic_string<_CharT, _Traits, _Alloc>& std::basic_string<_CharT, _Traits, _Alloc>::operator=(const std::basic_string<_CharT, _Traits, _Alloc>&) [with _CharT = char; _Traits = std::char_traits<char>; _Alloc = std::allocator<char>]' discards qualifiers [-fpermissive]
+        *__result = *__first1;
+                  ^
+
+17:48:02 Build Finished (took 876ms)
+

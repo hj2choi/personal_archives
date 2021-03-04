@@ -1,0 +1,17 @@
+public class pr007looppr14 {
+	public static void main (String[] args) {
+		
+		System.out.println("Triangular Sequence");
+		
+		int print = 0;
+		for(int a = 1;a<101;a++)
+		{	
+			print += a;
+			System.out.println(print); 
+		}
+	}
+}
+
+/*
+
+*/

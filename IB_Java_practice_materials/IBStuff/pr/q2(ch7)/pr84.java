@@ -1,0 +1,34 @@
+/*
+Write a function gcd which calculates the greatest common divisor of two numbers a and b.
+It does this by subtracting the smaller number from the larger and continues to do this until
+the numbers are the same. e.g. start {36, 27} then next stage {9,27} then {9,18} then {9.9}
+now stops because both numbers are the same. 9 is the gcd of 36 and 27
+*/
+public class pr84 extends IBIO
+{
+	static boolean gcd(int x, int y)
+	{
+			return (x==y);
+	}
+	public static void main (String args [])
+	{
+			int a = inputInt("Enter the first number");
+			int b = inputInt("Enter the second number");
+			while(true)
+			{
+				if (a>b)
+					a = a-b;
+				if (a<b)
+					b = b-a;
+				if (gcd(a,b))
+					break;
+			}
+			output("gcd is "+a);
+			
+	}
+}
+/*
+Enter the first number1134
+Enter the second number2643
+gcd is 3
+*/

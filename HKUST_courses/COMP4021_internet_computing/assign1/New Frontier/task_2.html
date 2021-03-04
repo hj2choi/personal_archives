@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI Custom Autocomplete</title>
+	<link rel="stylesheet" href="jquery-ui.css">
+	<script src="jquery-1.11.3.js"></script>
+	<script src="jquery-ui.js"></script>
+	<style>
+		.match-character {
+			// ToDo: Add properties such that the characters of each menu item in
+			//       the custom autocomplete widget that matches the search keyword
+			//       will be shown in bold, italic and blue.
+		}
+	</style>
+	<script>
+		function myAutoCompleteWidgetConstructor() {
+			this._super();
+		};
+		function renderAutoCompleteMenuItem(ul, item) {
+			terms = this.term.split(',');
+			term = terms[terms.length - 1].trim();
+			// ToDo: Complete this function for defining how to render each menu item that
+			//       will be shown in the custom autocomplete widget
+		};
+		function renderAutoCompleteMenu(ul, items) {
+			var that = this;
+			// ToDo: Complete this function for defining how to render the menu
+		};
+		$.widget( "custom.myautocomplete", $.ui.autocomplete, {
+			_create: myAutoCompleteWidgetConstructor,
+			_renderItem: renderAutoCompleteMenuItem,
+			_renderMenu: renderAutoCompleteMenu
+		});
+	</script>
+	<script>
+		var input_data = [
+			"actionscript",
+			"applescript",
+			"asp",
+			"basic",
+			"c",
+			"c++",
+			"clojure",
+			"cobol",
+			"coldfusion",
+			"erlang",
+			"fortran",
+			"groovy",
+			"haskell",
+			"java",
+			"javascript",
+			"lisp",
+			"perl",
+			"php",
+			"python",
+			"ruby",
+			"scala",
+			"scheme"
+		];
+		function split( val ) {
+			return val.split( /,\s*/ );
+		}
+		function extractLast( term ) {
+			return split( term ).pop();
+		}
+		function onDocumentReady() {
+			$( "#search" ).myautocomplete({
+				delay: 0,
+				source: input_data,
+			});
+		};
+		$( document ).ready(onDocumentReady);
+	</script>
+</head>
+<body>
+	<label for="search">Search: </label>
+	<input id="search">
+</body>
+</html>

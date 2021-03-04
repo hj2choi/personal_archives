@@ -1,0 +1,168 @@
+//============================================================================
+// Name        : ExpressionTree.cpp
+// Author      : CHOI, Hong Joon
+// Version     :
+// Copyright   : Your copyright notice
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
+#include <string>
+#include "stack.h"
+#include "Token.h"
+using namespace std;
+int operation(char op, int a, int b)
+{
+	switch (op)
+	{
+	case '*':
+		return a*b;
+	case '/':
+		return a/b;
+	case '+':
+		return a+b;
+	case '-':
+		return a-b;
+	}
+}
+
+
+
+int main() {
+	Stack<char*> a;
+	a.push(new char('a'));
+	a.push(new char('b'));
+	a.push(new char('c'));
+	a.push(new char('d'));
+	cout << a.size() << endl;
+	while (a.size()>=1)
+	{
+		cout << *a.top() << endl;
+		a.pop();
+	}
+	string inString = "(1213.132+31-341.231)*33.33";
+	for (string::iterator it=inString.begin();it!=inString.end(); it++)
+	{
+		if (isStartOfNumber(*it))
+		{
+			cout << "numDetected"<<endl;
+			cout << readOperandSequence(it ,inString.end()) << endl;
+		}
+	}
+	cout << "stack class test done. Enter expressions (THIS IS UNSAFE EVALUATOR."
+			"\nSyntax has to be exact. NO SPACES and ONLY ONE DIGIT NUMBER.)"<<endl;
+
+	Stack< Token* > expression;
+	string input;
+	cin >> input;
+
+	string rpnExpression;
+
+	// procedure to convert infix expression to postfix expression
+	for (string::iterator it=input.begin();it!=input.end(); it++)
+	{
+		cout << "iteration->"<<(*it) << endl;
+		if (operatorPriority(*it)==0)	// opening bracket
+		{
+			expression.push(new Operator(*it));
+		}
+		if (operatorPriority(*it)==1)	// closing bracket => pop and display
+		{
+			// while expressionStack.top() != openingBracket
+			while (!expression.top()->isOpeningBracket() && !expression.isEmpty())
+			{
+				if (expression.top()->isOperator())
+				{
+					cout<<(dynamic_cast<Operator*>(expression.top())->getSigniture());
+					rpnExpression.push_back(dynamic_cast<Operator*>(expression.top())->getSigniture());
+				}
+				else// if (expression.top()->isOperand())
+				{
+					cout<<(dynamic_cast<Operand*>(expression.top())->getValue());
+					rpnExpression.append(dynamic_cast<Operand*>(expression.top())->getValueString());
+					//rpnExpression.append(dynamic_cast<Operand*>(expression.top())->getValueString());
+				}
+				expression.pop();
+			}
+			expression.pop();
+		}
+		else if (1<operatorPriority(*it) && operatorPriority(*it)<100)	// operator
+		{
+			if (expression.isEmpty() || expression.top()->isOpeningBracket() || operatorPriority(dynamic_cast<Operator*>(expression.top())->getSigniture())>operatorPriority(*it))	// push
+			{
+				cout<<"pushed"<<endl;
+				expression.push(new Operator(*it));
+			}
+			else	// pop and display.		// TODO : needs clarification in algorithm. Should I Iterate here???? Working so far.
+			{
+				cout << "popped"<<endl;
+				while (true)
+				{
+					if (expression.top()->isOperator())
+					{
+						cout << (dynamic_cast<Operator*>(expression.top())->getSigniture());
+						rpnExpression.push_back(dynamic_cast<Operator*>(expression.top())->getSigniture());
+					}
+					else// if (expression.top()->isOperand())
+					{
+						cout<<(dynamic_cast<Operand*>(expression.top())->getValue());
+						rpnExpression.append(dynamic_cast<Operand*>(expression.top())->getValueString());
+					}
+					expression.pop();
+					if (expression.isEmpty() || expression.top()->isOpeningBracket() || operatorPriority(dynamic_cast<Operator*>(expression.top())->getSigniture())>operatorPriority(*it))
+						break;
+				}
+				expression.push(new Operator(*it));
+			}
+		}
+		else if (isStartOfNumber(*it))	// display operand
+		{
+			cout <<"operand"<<endl;
+			string str =
+			rpnExpression.append(readOperandSequence(it,input.end()));
+
+		}
+	}
+	while (!expression.isEmpty())//print all the remaining ones.
+	{
+		if (expression.top()->isOperator())
+		{
+			cout << (dynamic_cast<Operator*>(expression.top())->getSigniture());
+			rpnExpression.push_back(dynamic_cast<Operator*>(expression.top())->getSigniture());
+		}
+		else
+		{
+			cout<<(dynamic_cast<Operand*>(expression.top())->getValue());
+			rpnExpression.append(dynamic_cast<Operand*>(expression.top())->getValueString());
+		}
+		expression.pop();
+	}
+	cout<<endl;
+	// END OF the procedure.
+
+
+
+	// SECOND PROCEDURE: RPN evaluation (postfix expression evaluation)
+	/*for (string::iterator it=rpnExpression.begin();it!=rpnExpression.end(); it++)
+	{
+		cout<<*it;
+		if (operatorPriorityType(*it)==100)
+		{
+			expression.push(*it);
+		}
+		if (1<operatorPriorityType(*it) && operatorPriorityType(*it)<100)
+		{
+			int operandFirst = (int)expression.pop()-48;
+			int operandSecond = (int)expression.pop()-48;
+			cout << "o"<<operandFirst<<endl;
+			cout << "p"<<operandSecond<<endl;
+			expression.push((char)(operation(*it,operandFirst,operandSecond)+48));
+			cout<<"a"<<(char)(operation(*it,operandFirst,operandSecond)+48);
+		}
+	}
+	cout<<endl;
+
+	cout << "ans = "<<(int)expression.top()-48<<endl;
+*/
+	return 0;
+}

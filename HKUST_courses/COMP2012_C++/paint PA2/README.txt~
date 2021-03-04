@@ -1,0 +1,87 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Undo on resizing function
+after undo operation which resizes the image, image is sometimes not displayed properly. SOLVED
+
+
+
+
+
+
+Fill color tool
+if you attempt to fill large area (around 600x600) at the same time, the program seems to cause segmentation fault.
+Recursive function is rapidly depleteting stack space in high possibility.
+
+
+
+
+
+
+
+SERIES OF KNOWN ISSUES
+
+
+
+
+////////////Resize function
+*Works properly on contraction										// SOLVED
+*When expanded, it doesn't initialize with background color		// SOLVED
+
+
+////////////UNDO AND REDO
+- Deleting and re-initializing undo and redo causes segmentation fault. And possible memory leak if it keeps going on.  // SOLVED
+- Draw something => clear => redo leads to segmentation fault.    // SOLVED
+- 
+- Minor issue: Rarely causes segmentation fault at program termination, usually when maximum undo level is set to 0.
+
+
+
+/////////// Custom Dialogues
+- Connect funtion is prone to potential compile errors. "this" parameter is missing! (signal, this, slot)!!! Needs review on connect()
+
+
+
+
+////////// Line Dialogue
+- TODO polytype COMPLETE
+- TODO doubleClick COMPLETE
+- TODO DESTRUCTOR COMPLETE
+
+
+
+///////// Rect Dialogue
+

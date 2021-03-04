@@ -1,0 +1,145 @@
+#ifndef HASH_TABLE_IMPL_ITERATORS_H
+#define HASH_TABLE_IMPL_ITERATORS_H
+
+//////////////////////////////////////////////////////////////////////////////////
+template<class ElemType>
+HashTable<ElemType>::Iterator::Iterator()
+{
+	m_pHashTable = NULL;
+	m_bucketIndex = HASH_END_ITERATOR_BUCKET_INDEX;
+}
+
+template<class ElemType>
+HashTable<ElemType>::Iterator::Iterator(
+	HashTable* hashTable, unsigned int bucketIndex, const typename DoublyLinkedList<ElemType>::Iterator& it)
+{
+	m_pHashTable = hashTable;
+	m_bucketIndex = bucketIndex;
+	m_iterator = it;
+}
+
+template<class ElemType>
+ElemType& HashTable<ElemType>::Iterator::operator*() const
+{
+	return (*m_iterator);
+}
+
+template<class ElemType>
+typename HashTable<ElemType>::Iterator&
+HashTable<ElemType>::Iterator::operator++()
+{
+	if ( m_pHashTable != NULL && m_bucketIndex != HASH_END_ITERATOR_BUCKET_INDEX )
+	{
+		++m_iterator;
+		while ( m_bucketIndex != HASH_END_ITERATOR_BUCKET_INDEX &&
+				m_iterator == m_pHashTable->m_buckets[m_bucketIndex].end() )
+		{
+			// end of buckets
+            ++m_bucketIndex;
+			if ( m_bucketIndex < m_pHashTable->m_numBuckets )
+				m_iterator = m_pHashTable->m_buckets[m_bucketIndex].begin();
+			else {m_bucketIndex = HASH_END_ITERATOR_BUCKET_INDEX;}	// end of hash table
+		}
+	}
+	return (*this);
+}
+
+template<class ElemType>
+typename HashTable<ElemType>::Iterator
+HashTable<ElemType>::Iterator::operator++(int)
+{
+	Iterator temp = (*this);
+	++(*this);
+	return temp;
+}
+
+template<class ElemType>
+void HashTable<ElemType>::Iterator::set(
+	HashTable* hashTable, unsigned int bucketIndex, const typename DoublyLinkedList<ElemType>::Iterator& it)
+{
+	m_pHashTable = hashTable;
+	m_bucketIndex = bucketIndex;
+	m_iterator = it;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+template<class ElemType>
+HashTable<ElemType>::ConstIterator::ConstIterator()
+{
+	m_pHashTable = NULL;
+	m_bucketIndex = HASH_END_ITERATOR_BUCKET_INDEX;
+}
+
+template<class ElemType>
+HashTable<ElemType>::ConstIterator::ConstIterator(
+	const HashTable* hashTable, unsigned int bucketIndex, const typename DoublyLinkedList<ElemType>::ConstIterator& it)
+{
+	m_pHashTable = hashTable;
+	m_bucketIndex = bucketIndex;
+	m_iterator = it;
+}
+
+template<class ElemType>
+HashTable<ElemType>::ConstIterator::ConstIterator(const Iterator& nonConstIterator)
+{
+	m_pHashTable  = nonConstIterator.m_pHashTable;
+	m_bucketIndex = nonConstIterator.m_bucketIndex;
+	m_iterator    = nonConstIterator.m_iterator;
+}
+
+template<class ElemType>
+typename HashTable<ElemType>::ConstIterator& HashTable<ElemType>::ConstIterator::operator=(const Iterator& assign)
+{
+	m_pHashTable  = assign.m_pHashTable;
+	m_bucketIndex = assign.m_bucketIndex;
+	m_iterator    = assign.m_iterator;
+	return (*this);
+}
+
+template<class ElemType>
+const ElemType& HashTable<ElemType>::ConstIterator::operator*() const
+{
+	return (*m_iterator);
+}
+
+template<class ElemType>
+typename HashTable<ElemType>::ConstIterator& HashTable<ElemType>::ConstIterator::operator++()
+{
+	if ( m_pHashTable != NULL && m_bucketIndex != HASH_END_ITERATOR_BUCKET_INDEX )
+	{
+		++m_iterator; 
+		while ( m_bucketIndex != HASH_END_ITERATOR_BUCKET_INDEX &&
+				 m_iterator == m_pHashTable->m_buckets[m_bucketIndex].end() )
+		{
+			// end of buckets
+            ++m_bucketIndex;
+			if ( m_bucketIndex < m_pHashTable->m_numBuckets )
+				m_iterator = m_pHashTable->m_buckets[m_bucketIndex].begin();
+			else m_bucketIndex = HASH_END_ITERATOR_BUCKET_INDEX;	// end of hash table
+		}
+	}
+
+	return (*this);
+}
+
+template<class ElemType>
+typename HashTable<ElemType>::ConstIterator HashTable<ElemType>::ConstIterator::operator++(int)
+{
+	ConstIterator temp = (*this);
+	++(*this);
+	return temp;
+}
+
+template<class ElemType>
+void HashTable<ElemType>::ConstIterator::set(
+	const HashTable* hashTable, unsigned int bucketIndex, const typename DoublyLinkedList<ElemType>::ConstIterator& it)
+{
+	m_pHashTable = hashTable;
+	m_bucketIndex = bucketIndex;
+	m_iterator = it;
+}
+
+
+
+#endif // HASH_TABLE_IMPL_ITERATORS_H

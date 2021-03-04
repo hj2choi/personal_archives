@@ -1,0 +1,7 @@
+00:00:08 **** Incremental Build of configuration Debug for project Lab3 ****
+Info: Internal Builder is used for build
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\Prism.o" "..\\src\\Prism.cpp" 
+g++ -o Lab3.exe "src\\Prism.o" "src\\Polygon.o" "src\\Point.o" "src\\Lab3.o" 
+
+00:00:09 Build Finished (took 963ms)
+

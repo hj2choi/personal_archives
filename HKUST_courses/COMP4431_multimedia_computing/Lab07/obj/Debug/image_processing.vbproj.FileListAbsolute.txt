@@ -1,0 +1,16 @@
+G:\Workspace\COMP4431\Lab07\bin\image_processing.exe
+G:\Workspace\COMP4431\Lab07\bin\image_processing.pdb
+G:\Workspace\COMP4431\Lab07\bin\image_processing.xml
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.frmEffect.resources
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.frmBrightness.resources
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.frmColorFill.resources
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.frmGrayscale.resources
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.frmMain.resources
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.frmNegation.resources
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.frmPosterization.resources
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.frmRoughen.resources
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.frmImage.resources
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.vbproj.GenerateResource.Cache
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.exe
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.xml
+G:\Workspace\COMP4431\Lab07\obj\Debug\image_processing.pdb

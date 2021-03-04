@@ -1,0 +1,7 @@
+01:46:20 **** Incremental Build of configuration Debug for project Assignment3 ****
+Info: Internal Builder is used for build
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\Assignment3.o" "..\\src\\Assignment3.cpp" 
+g++ -o Assignment3.exe "src\\Student.o" "src\\RegistrationManager.o" "src\\Course.o" "src\\Assignment3.o" 
+
+01:46:22 Build Finished (took 2s.13ms)
+

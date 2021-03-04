@@ -1,0 +1,34 @@
+19:17:50 **** Incremental Build of configuration Debug for project BSTExample ****
+Info: Internal Builder is used for build
+g++ -O0 -g3 -Wall -c -fmessage-length=0 -o "src\\BSTExample.o" "..\\src\\BSTExample.cpp" 
+In file included from ..\src\BSTExample.cpp:10:0:
+..\src\BST.h: In instantiation of 'void BST<T>::bst_node::print(int) const [with T = int]':
+..\src\BST.h:60:2:   required from 'void BST<T>::print(int) const [with T = int]'
+..\src\BSTExample.cpp:16:14:   required from here
+..\src\BST.h:26:12: error: invalid use of non-static data member 'BST<int>::root'
+  bst_node* root;
+            ^
+..\src\BST.h:45:10: error: from this location
+  if (root==0)
+          ^
+..\src\BST.h:26:12: error: invalid use of non-static data member 'BST<int>::root'
+  bst_node* root;
+            ^
+..\src\BST.h:47:6: error: from this location
+  root->right.print(depth+1);
+      ^
+..\src\BST.h:26:12: error: invalid use of non-static data member 'BST<int>::root'
+  bst_node* root;
+            ^
+..\src\BST.h:53:17: error: from this location
+  std::cout<<root->value<<std::endl;
+                 ^
+..\src\BST.h:26:12: error: invalid use of non-static data member 'BST<int>::root'
+  bst_node* root;
+            ^
+..\src\BST.h:55:6: error: from this location
+  root->left.print(depth+1);
+      ^
+
+19:17:51 Build Finished (took 713ms)
+

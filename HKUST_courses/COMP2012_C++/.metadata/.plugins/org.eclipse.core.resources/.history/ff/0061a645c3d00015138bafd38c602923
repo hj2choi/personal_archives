@@ -1,0 +1,37 @@
+//============================================================================
+// Name        : pointerEx.cpp
+// Author      : CHOI, Hong Joon
+// Version     :
+// Copyright   : Your copyright notice
+// Description : Hello World in C++, Ansi-style
+//============================================================================
+
+#include <iostream>
+using namespace std;
+
+struct Node {
+	int value;
+	Node* next;
+};
+
+void printLinkedList(Node* head) {
+
+	cout << "list" << endl;
+	while (head!=NULL) {
+		cout << (*head).value << ", next address = " << endl;
+		head = (*head).next;
+	}
+}
+
+int main() {
+
+	Node* head = NULL;
+	(*head).value = 1;
+	(*head).next = NULL;
+
+
+	printLinkedList(head);
+	return 0;
+}
+
+

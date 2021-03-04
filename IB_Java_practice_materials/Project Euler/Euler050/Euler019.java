@@ -1,0 +1,53 @@
+class Euler019 extends HongJoonLibrary
+{
+	static int year = 1900; // 1 Jan 1900
+	static int month = 1;
+	static int date = 0;
+	static int dd = 1; // monday
+	static int daysInMonth=31;
+
+	public static void main(String[] args) 
+	{
+		int ans=0;
+		
+		for (int day=1;day<365*101 ;day++ )
+		{
+			date++;
+			dd++;
+			if (date>daysInMonth)
+				calcDaysInMonth();
+			if (dd>=7)
+			{
+				dd=0;
+				if (date==1 && year>=1901)
+					ans++;
+			}
+
+			System.out.println(year+"  "+month+"  "+date+"    "+dd);
+			System.out.println(ans);
+				
+		}
+	}
+	public static void calcDaysInMonth()
+	{
+		month++;
+		date=1;
+
+		if (month>=13)
+		{
+			month-=12;
+			year++;
+		}
+
+		if (month==2 && year%4==0 && year%400==0)//leapYear
+			daysInMonth=29;
+		else if (month==2)
+			daysInMonth=28;
+		else if (month==4 || month==6 || month==9 || month==11)
+			daysInMonth=30;
+		else
+			daysInMonth=31;
+	}
+}
+//9,4,6,11
+//2

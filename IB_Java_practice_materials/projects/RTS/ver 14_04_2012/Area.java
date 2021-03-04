@@ -1,0 +1,9 @@
+class Area 
+{
+	private Unit[] ArmyInArea; //ArmyInPaticularArea
+	private int occupiedBy; // occupied by which player (10:none, 0: neutral, 1: main)
+	Area()
+	{
+		occupiedBy=10;
+	}
+}

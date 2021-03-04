@@ -1,0 +1,1 @@
+Processed word without punctuation marks:HelloWorld
