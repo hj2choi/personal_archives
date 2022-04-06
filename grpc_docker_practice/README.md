@@ -1,15 +1,15 @@
 ## execution guide
 ```bash
 python -m pip --no-cache-dir install --upgrade pip grpcio grpcio-tools
-python -m grpc.tools.protoc -I. --python_out . --grpc_python_out . ./myservice.proto
+python -m grpc.tools.protoc -I. --python_out . --grpc_python_out . ./image_classification_service.proto
 ```
 
 ```bash
-python myservice_server.py
+python image_classification_server.py
 ```
 in a seperate terminal, run
 ```bash
-python myservice_client.py --input hello_world
+python image_classification_client.py --img_path sample_images/lenna.png
 ```
 
 ## execution guide with docker
@@ -37,5 +37,5 @@ https://bluecolorsky.tistory.com/110
 #### test server with client
 ```bash
 docker exec -it grpc_practice_container /bin/bash
-python myservice_client.py --input hello_world!
+python image_classification_client.py --input hello_world!
 ```
