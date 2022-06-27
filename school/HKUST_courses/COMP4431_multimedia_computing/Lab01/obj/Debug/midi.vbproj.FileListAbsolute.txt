@@ -1,0 +1,8 @@
+G:\Workspace\COMP4431\Lab01\bin\midi_keyboard.exe
+G:\Workspace\COMP4431\Lab01\bin\midi_keyboard.pdb
+G:\Workspace\COMP4431\Lab01\bin\midi_keyboard.xml
+G:\Workspace\COMP4431\Lab01\obj\Debug\midi_keyboard.Form1.resources
+G:\Workspace\COMP4431\Lab01\obj\Debug\midi.vbproj.GenerateResource.Cache
+G:\Workspace\COMP4431\Lab01\obj\Debug\midi_keyboard.exe
+G:\Workspace\COMP4431\Lab01\obj\Debug\midi_keyboard.xml
+G:\Workspace\COMP4431\Lab01\obj\Debug\midi_keyboard.pdb

@@ -1,0 +1,8 @@
+G:\Workspace\COMP4431\Lab02\bin\midi_sequencer.exe
+G:\Workspace\COMP4431\Lab02\bin\midi_sequencer.pdb
+G:\Workspace\COMP4431\Lab02\bin\midi_sequencer.xml
+G:\Workspace\COMP4431\Lab02\obj\Debug\midi_sequencer.Form1.resources
+G:\Workspace\COMP4431\Lab02\obj\Debug\midi.vbproj.GenerateResource.Cache
+G:\Workspace\COMP4431\Lab02\obj\Debug\midi_sequencer.exe
+G:\Workspace\COMP4431\Lab02\obj\Debug\midi_sequencer.xml
+G:\Workspace\COMP4431\Lab02\obj\Debug\midi_sequencer.pdb

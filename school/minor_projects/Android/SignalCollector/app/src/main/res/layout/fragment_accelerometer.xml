@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txt_debug"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart_live_accelerometer"
+        android:layout_width="match_parent"
+        android:layout_height="250dp" />
+
+    <TextView
+        android:id="@+id/txt_acc_x"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="x = " />
+
+    <TextView
+        android:id="@+id/txt_acc_y"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="y =" />
+
+    <TextView
+        android:id="@+id/txt_acc_z"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="z = " />
+
+    <TextView
+        android:id="@+id/txt_vel_x"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txt_pos_x"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/txt_aveacc_x"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="TextView" />
+
+</LinearLayout>

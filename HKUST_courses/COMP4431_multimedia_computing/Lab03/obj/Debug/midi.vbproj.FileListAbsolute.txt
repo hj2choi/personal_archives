@@ -1,8 +1,0 @@
-G:\Workspace\COMP4431\Lab03\bin\midi_whiteboard.exe
-G:\Workspace\COMP4431\Lab03\bin\midi_whiteboard.pdb
-G:\Workspace\COMP4431\Lab03\bin\midi_whiteboard.xml
-G:\Workspace\COMP4431\Lab03\obj\Debug\midi_whiteboard.Form1.resources
-G:\Workspace\COMP4431\Lab03\obj\Debug\midi.vbproj.GenerateResource.Cache
-G:\Workspace\COMP4431\Lab03\obj\Debug\midi_whiteboard.exe
-G:\Workspace\COMP4431\Lab03\obj\Debug\midi_whiteboard.xml
-G:\Workspace\COMP4431\Lab03\obj\Debug\midi_whiteboard.pdb

@@ -1,0 +1,41 @@
+/*
+/*
+Write a program that will read in a sequence of 0’s and 1’s as a binary number and change
+the input form from binary to decimal. Remember that what is being read in are characters
+and not numbers. Your program must test if only 0's and 1's are in the input. Otherwise
+output error message. To test if the digit is a ‘0’ or a ‘1’ you must do the following
+*/
+public class pr102 extends IBIO
+{
+	public static void main(String args[])
+	{ 
+		String bin = input("Input Binary number:");
+		char[] xx = bin.toCharArray();
+		int i=0;
+		int dec = 0;
+		int position = bin.length()-1;
+		
+		for (i=0;i<position;i++);
+		{
+			if (xx[i] != '1' && xx[i] != '0')					// chk if numbers are binary
+				{
+					output("error");
+					return;
+				}
+				
+		}
+		
+		for (int k = 0; k<bin.length();k++)			// binary conversion algorithm
+		{
+			int t=1;
+			for (int a = bin.length()-1; a>k; a--)
+			{
+				t=t*2;
+			}
+			dec = dec+((int)xx[k]-48)*t;
+		}
+		output(dec);
+	}
+}
+
+

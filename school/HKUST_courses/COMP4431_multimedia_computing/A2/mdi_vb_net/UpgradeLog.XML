@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><?xml-stylesheet type='text/xsl' href='_UpgradeReport_Files/UpgradeReport.xslt'?><UpgradeLog>
+<Properties><Property Name="Solution" Value="mdiform">
+</Property><Property Name="Solution File" Value="C:\Users\song\Desktop\mdi_vb_net\mdiform.sln">
+</Property><Property Name="Date" Value="2011年11月3日">
+</Property><Property Name="Time" Value="19:52">
+</Property></Properties><Event ErrorLevel="0" Project="" Source="mdiform.sln" Description="File successfully backed up as C:\Users\song\Desktop\mdi_vb_net\Backup\mdiform.sln">
+</Event><Event ErrorLevel="0" Project="mdiform" Source="mdiform.vbproj" Description="Project file successfully backed up as C:\Users\song\Desktop\mdi_vb_net\Backup\mdiform.vbproj">
+</Event><Event ErrorLevel="0" Project="mdiform" Source="mdiform.vbproj.user" Description="Project user file successfully backed up as C:\Users\song\Desktop\mdi_vb_net\Backup\mdiform.vbproj.user">
+</Event><Event ErrorLevel="0" Project="mdiform" Source="frmMain.vb" Description="File successfully backed up as C:\Users\song\Desktop\mdi_vb_net\Backup\frmMain.vb">
+</Event><Event ErrorLevel="0" Project="mdiform" Source="frmNegation.vb" Description="File successfully backed up as C:\Users\song\Desktop\mdi_vb_net\Backup\frmNegation.vb">
+</Event><Event ErrorLevel="0" Project="mdiform" Source="Image.vb" Description="File successfully backed up as C:\Users\song\Desktop\mdi_vb_net\Backup\Image.vb">
+</Event><Event ErrorLevel="0" Project="mdiform" Source="modImage.vb" Description="File successfully backed up as C:\Users\song\Desktop\mdi_vb_net\Backup\modImage.vb">
+</Event><Event ErrorLevel="0" Project="mdiform" Source="frmMain.resX" Description="File successfully backed up as C:\Users\song\Desktop\mdi_vb_net\Backup\frmMain.resX">
+</Event><Event ErrorLevel="0" Project="mdiform" Source="frmNegation.resX" Description="File successfully backed up as C:\Users\song\Desktop\mdi_vb_net\Backup\frmNegation.resX">
+</Event><Event ErrorLevel="0" Project="mdiform" Source="Image.resx" Description="File successfully backed up as C:\Users\song\Desktop\mdi_vb_net\Backup\Image.resx">
+</Event><Event ErrorLevel="0" Project="mdiform" Source="mdiform.vbproj" Description="Project converted successfully">
+</Event><Event ErrorLevel="3" Project="mdiform" Source="mdiform.vbproj" Description="Converted">
+</Event><Event ErrorLevel="0" Project="" Source="mdiform.sln" Description="Solution converted successfully">
+</Event><Event ErrorLevel="3" Project="" Source="mdiform.sln" Description="Converted">
+</Event><Event ErrorLevel="0" Project="mdiform" Source="mdiform.vbproj" Description="Scan complete: Upgrade not required for project files.">
+</Event></UpgradeLog>

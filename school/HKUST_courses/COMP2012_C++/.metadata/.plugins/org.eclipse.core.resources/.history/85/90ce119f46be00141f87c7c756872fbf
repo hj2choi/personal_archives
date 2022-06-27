@@ -1,0 +1,31 @@
+/*
+ * stringset.cpp
+ *
+ *  Created on: Feb 24, 2015
+ *      Author: HongJoon
+ */
+#include "stringset.h"
+
+using namespace std;
+
+StringSet::StringSet()
+{
+	size=0;
+	capacity=0;
+	arr=NULL;
+}
+
+StringSet::~StringSet()
+{
+	delete []arr;
+	arr=NULL;
+}
+
+StringSet::StringSet(const std::string& oneItem)
+{
+	size=1;
+	capacity=2;
+	arr = new std::string[capacity];
+	arr[0] = oneItem;
+
+}

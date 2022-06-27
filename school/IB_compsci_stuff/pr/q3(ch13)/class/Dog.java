@@ -1,0 +1,69 @@
+
+public class Dog implements java.io.Serializable
+{
+	public static void main(String args[])
+	{
+		dd xx = new dd();
+		//mydog1.bark();
+
+		dd yy=new dd();
+		yy.equals(xx);// = mydog1; it works if I use this instead
+		//yy=xx;
+		//yy = (dd)xx.clone();
+		System.out.println(xx);
+		yy.changeNameTo("222");
+		System.out.println(xx);
+		//mydog1.bark();
+
+		yy=UnoptimizedDeepCopy.copy(xx);
+
+
+
+
+		
+		int x = 0;
+		int y;
+		y = x;
+		y=1;
+		//x=?;
+	}
+}
+
+
+
+class  dd implements Cloneable
+{
+	private int age;
+	private String name;
+
+	public dd()
+	{
+		age =1;
+		name = "111";
+	}		//constructor(initialize)
+	public String toString()
+	{
+		return name;
+	}
+
+	public int getAge(){return age;}
+	public String getName(){return name;}
+
+	public void changeNameTo(String a)
+	{
+		name=a;
+	}
+	public dd equals(dd dog)
+	{
+		age=dog.age;
+		name=dog.name;
+		dd temp = new dd();//dog.getAge(), dog.getName());
+		temp.age=age;
+		temp.name=name;
+		return temp;
+	}
+	//public dd(dd another)
+	//{this.dd = another}
+	
+	
+}

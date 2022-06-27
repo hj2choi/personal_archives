@@ -1,0 +1,869 @@
+class Map extends DataBase
+{
+	private Area[][] area; //areas
+	private int[] cursorLocation;
+	private int[] AIcursor;
+	private boolean cursorSelect;
+
+	private int[] conditionScript;
+	private String[] actionScript;
+	private int missionObjective;
+	private int expReward;
+	private int moneyReward;
+	private int stageReward;
+	private boolean victoryStatus=false;
+
+	private double[][] influenceMap;
+	private int AIscript = 0;
+
+	private int loading = 1000;//loadTime
+	private int conditionToAvoidContact = 400;//if army is 300 less than enemy's armyStrength
+	Map() // construct map
+	{
+		cursorSelect=false;
+		cursorLocation=new int[]{5,5};
+		AIcursor = new int[2];
+		area =  new Area[10][10];
+		for (int i=1;i<10 ;i++ )
+			for (int j=1;j<10 ;j++ )
+				area[i][j] = new Area();
+		//occupiedBy=10;
+	}
+	public void executeCampaign(Player[] player ,int playerNumber, int initialWatt, int income, boolean[] AIcontrolled)
+	{
+		clearscreen();
+		printLine(10);
+		System.out.println(" loading... please wait");
+		printLine(10);
+		System.out.print("Initializing map");for (int b = 0;b<50 ;b++ )System.out.print("\b");delay(loading/2.5);
+		System.out.print("Setting Player data              ");for (int b = 0;b<50 ;b++ )System.out.print("\b");delay(loading/4);
+		System.out.print("Loading Artificial Intelligence				");for (int b = 0;b<50 ;b++ )System.out.print("\b");delay(loading/3);
+		System.out.print("Implementing Triggers            ");for (int b = 0;b<50 ;b++ )System.out.print("\b");delay(loading/6);
+		System.out.print("Loading battle data             ");for (int b = 0;b<50 ;b++ )System.out.print("\b");delay(loading/5);
+		System.out.print("Rendering Field...            ");for (int b = 0;b<50 ;b++ )System.out.print("\b");	delay(loading/2);
+
+		int turnElapsed=0;
+		for (int i=1; i<=playerNumber; i++)
+			player[i].enterBattleField(initialWatt,income);
+		turnLoop : while (true)
+		{
+			
+			for (int i=1;i<=playerNumber ;i++ )
+			{
+				turnElapsed++;
+				//====trigger form====
+				//if (player has "" in particular area in particular time)  : condition
+				//execute AI script  : action
+				for (int k=0;k<500 ;k++ )
+				{
+					try
+					{
+						if (conditionScript[k]/1000==1 && conditionScript[k]%1000==turnElapsed)// condition 1 (elapsedTime)
+							executeAIscript(actionScript[k], k);
+						else if (conditionScript[k]/1000==2 && ((conditionScript[k]%1000)/100)==area[(conditionScript[k]%100)/10][conditionScript[k]%10].getOccupiedStatus() && area[(conditionScript[k]%100)/10][conditionScript[k]%10].getArmySizeInArea()>=1)
+							executeAIscript(actionScript[k], k);
+						else if (conditionScript[k]/1000==3 || conditionScript[k]/1000==4)//condition 3 (number of units that n player command)
+						{
+							int totalUnitsCount=0;
+							for (int y=1;y<=9;y++ )
+								for (int x=1;x<=9 ;x++ )
+									totalUnitsCount+=(area[y][x].getOccupiedStatus()==(conditionScript[k]%1000)/100)?area[y][x].getArmySizeInArea():0;//count army size
+							if ((conditionScript[k]/1000==3 && totalUnitsCount<=(conditionScript[k]%100))    ||       conditionScript[k]/1000==4 && totalUnitsCount>=(conditionScript[k]%100))
+								executeAIscript(actionScript[k], k);
+						}
+					}
+					catch (Exception e){continue;} // stop searching for triggers
+				}
+				
+				executeAIscript("message//"+"Turn "+turnElapsed+", Player "+i, 1);
+				
+				influenceMap=generateInfluenceMap(i); // generate influence map 
+				player[i].earnWatt(additionalIncome(i)); // give income (player income + income from occupied areas)
+				printMap(i, player[i],AIcontrolled[i]);// turn for player
+
+				if (eliminationStatusOf(1))
+				{
+					defeatScreen();
+					break turnLoop;
+				}
+				victoryStatus=true;
+				for (int j=2;j<=playerNumber ;j++ )// if other team is all eliminated
+					if (!eliminationStatusOf(j))
+					{
+						victoryStatus=false;
+						break;
+					}
+				if (victoryStatus)
+				{
+					victoryScreen();
+					break turnLoop;
+				}
+			}
+			
+			
+			
+		}
+		
+	}
+	public void printMap(int turn, Player player, boolean AIcontroled) //which player, and turn of who  // if player is controlled by AI agent, different rutine should be used. (No cursor)
+	{
+		int[] actionDone=new int[81];
+		int actionCount=0;
+		
+//=========================================================Manually controlled turn======================================================================		
+		while (!AIcontroled)
+		{
+			//System.out.println(area[5][6].getArmyInArea()[0]);
+			//System.out.println(area[5][6].getArmySizeInArea());
+			refreshField();
+			printField();
+			
+			System.out.println("use [wasd] to move your cursor around. To select area, enter [1]. Enter [0] to end your turn");
+			String input=s.next();
+			enterWASD(input);
+			if (input.equals("0"))
+				break;
+			if (input.equals("1")) //select area
+			{
+				int originalLocation = cursorLocation[0]*10+cursorLocation[1];
+
+				if (area[cursorLocation[0]][cursorLocation[1]].getArmySizeInArea()>=0)//&& area[cursorLocation[0]][cursorLocation[1]].getOccupiedStatus()==turn )// if original place is occupied by player
+				{
+					Area originalArea = area[cursorLocation[0]][cursorLocation[1]];
+					while (true)
+					{
+						System.out.println(((originalArea.getAreaProperty()==1 || originalArea.getAreaProperty()==2)?"Enter [1] to build unit, ":"")+"Enter [2] to view status. "+(!chkIfActionIsDone(originalLocation, actionDone)?"Enter [wasd] where you want your army advance to":""));
+						input=s.next();
+						try	// view status
+						{
+							int numInput=Integer.parseInt(input);
+							if (numInput==2)
+								originalArea.printAreaStatus();
+							else if (numInput==1 && (originalArea.getAreaProperty()==1 || originalArea.getAreaProperty()==2))
+							{
+								clearscreen();
+								MainMenu.player[turn].printUnitInfo();
+								System.out.println("\nCurrent watt = "+MainMenu.player[turn].getWatt());
+								while (true)
+								{
+									System.out.println("Choose unit to build. (1 to 9). Enter 0 to escape");
+									int unitChoice = safeInput();
+									if (unitChoice==0)
+										break;
+									if (MainMenu.player[turn].getConstructedUnit(unitChoice).getHp()>0 && MainMenu.player[turn].getWatt()>=MainMenu.player[turn].getConstructedUnit(unitChoice).getWatt())
+										if ( countMeleeUnits(originalArea.getArmyInArea(), originalArea.getArmySizeInArea())<10 ||countSupportUnits(originalArea.getArmyInArea(), originalArea.getArmySizeInArea())<10) // if unit supply limit doesn't exceed
+										{
+											area[cursorLocation[0]][cursorLocation[1]].buildUnit(MainMenu.player[turn] ,unitChoice);
+											MainMenu.player[turn].payWatt(MainMenu.player[turn].getConstructedUnit(unitChoice).getWatt());
+											break;
+										}
+								}
+								
+								
+							}
+							
+						}
+						catch (Exception e){}
+						break;
+					}
+					
+					enterWASD(input);
+					if (originalArea == area[cursorLocation[0]][cursorLocation[1]] || chkIfActionIsDone(originalLocation, actionDone))//chk if enterWASD() denied user input
+						continue;
+					if (area[cursorLocation[0]][cursorLocation[1]].getOccupiedStatus()==turn || area[cursorLocation[0]][cursorLocation[1]].getOccupiedStatus()==-1)  //if destination is occupied by player or neutral, if nothing is done on this turn
+						if ( countMeleeUnits(originalArea.getArmyInArea(), originalArea.getArmySizeInArea())+countMeleeUnits(area[cursorLocation[0]][cursorLocation[1]].getArmyInArea(), area[cursorLocation[0]][cursorLocation[1]].getArmySizeInArea())<11 || countSupportUnits(originalArea.getArmyInArea(), originalArea.getArmySizeInArea())+countSupportUnits(area[cursorLocation[0]][cursorLocation[1]].getArmyInArea(), area[cursorLocation[0]][cursorLocation[1]].getArmySizeInArea())<11) // if unit supply limit doesn't exceed
+						{
+							moveUnit(originalLocation, originalArea, turn, cursorLocation);  //Move Unit
+							actionDone[actionCount]=cursorLocation[0]*10+cursorLocation[1];
+							actionCount++;
+						}
+
+					if (area[cursorLocation[0]][cursorLocation[1]].getOccupiedStatus()>=0 && area[cursorLocation[0]][cursorLocation[1]].getOccupiedStatus()!=turn ) // if destination is occupied by opponent, enter battle
+					{
+						System.out.println("battle");
+						Battle battle = new Battle(originalArea.getArmyInArea(),originalArea.getArmySizeInArea(),area[cursorLocation[0]][cursorLocation[1]].getArmyInArea(), area[cursorLocation[0]][cursorLocation[1]].getArmySizeInArea());
+						battle.battle();
+						organizeFieldAfterBattle(originalLocation, battle, turn, cursorLocation);
+						actionDone[actionCount]=cursorLocation[0]*10+cursorLocation[1];
+						actionCount++;
+						
+					}
+				}
+			}
+		}
+
+//=======================================================AI controled turn======================================================================
+		while (AIcontroled)
+		{
+		
+			AIcursor = new int[2];
+			for (int i=1; i<=9; i++)
+			{
+				for (int j=1; j<=9; j++)
+				{
+					AIcursor[0]=i;
+					AIcursor[1]=j;
+					Area originalArea = area[AIcursor[0]][AIcursor[1]];
+					int originalLocation = AIcursor[0]*10+AIcursor[1];
+					
+					if (area[AIcursor[0]][AIcursor[1]].getArmySizeInArea()>=0 && area[AIcursor[0]][AIcursor[1]].getOccupiedStatus()==turn)// if original place is occupied by player
+					{
+//=======================================================Building phase============================================================
+						if (AIscript==2)
+							buildPhase(turn, originalArea, i, j,5);
+						else if (AIscript==3)
+							buildPhase(turn, originalArea, i, j,1);
+//=======================================================Action phase==========================================================						
+						influenceMap=generateInfluenceMap(turn); // generate influence map 
+						System.out.println(moveToTarget(setTarget(AIcursor, influenceMap, turn),originalLocation));
+						AIcursor = AIenterWASD(moveToTarget(setTarget(AIcursor, influenceMap, turn),originalLocation), AIcursor); // move unit
+						
+						//sytem.out.println(moveToTarget(destination(),originalLocation)+turn);//to test
+						if (originalArea == area[AIcursor[0]][AIcursor[1]] || chkIfActionIsDone(originalLocation, actionDone) || (originalArea.getArmySizeInArea()<=0))//chk if enterWASD() denied user input, if nothing is done on this turn
+							continue;
+						if (area[AIcursor[0]][AIcursor[1]].getOccupiedStatus()==turn || area[AIcursor[0]][AIcursor[1]].getOccupiedStatus()==-1)  //if destination is occupied by player or neutral
+							if ( countMeleeUnits(originalArea.getArmyInArea(), originalArea.getArmySizeInArea())+countMeleeUnits(area[AIcursor[0]][AIcursor[1]].getArmyInArea(), area[AIcursor[0]][AIcursor[1]].getArmySizeInArea())<11 || countSupportUnits(originalArea.getArmyInArea(), originalArea.getArmySizeInArea())+countSupportUnits(area[AIcursor[0]][AIcursor[1]].getArmyInArea(), area[AIcursor[0]][AIcursor[1]].getArmySizeInArea())<11) // if unit supply limit doesn't exceed
+							{
+								moveUnit(originalLocation, originalArea, turn, AIcursor);  //Move Unit
+								actionDone[actionCount]=AIcursor[0]*10+AIcursor[1];
+								actionCount++;
+							}
+						if (area[AIcursor[0]][AIcursor[1]].getOccupiedStatus()>=0 && area[AIcursor[0]][AIcursor[1]].getOccupiedStatus()!=turn ) // if destination is occupied by opponent, enter battle
+						{
+							System.out.println("battle");
+							Battle battle = new Battle(originalArea.getArmyInArea(),originalArea.getArmySizeInArea(),area[AIcursor[0]][AIcursor[1]].getArmyInArea(), area[AIcursor[0]][AIcursor[1]].getArmySizeInArea());
+							battle.battle();
+							organizeFieldAfterBattle(originalLocation, battle, turn, AIcursor);
+							actionDone[actionCount]=AIcursor[0]*10+AIcursor[1];
+							actionCount++;
+							
+						}
+						refreshField();
+						printField();
+						delay(1000);
+					}
+				
+				}
+			}
+			break;
+		}
+	}
+	
+	public void enterWASD(String input)
+	{
+		
+		if (input.equals("w") && cursorLocation[0]!=1 && area[cursorLocation[0]-1][cursorLocation[1]].getAreaProperty()!=-1)
+			cursorLocation[0]--;
+		if (input.equals("s") && cursorLocation[0]!=9 && area[cursorLocation[0]+1][cursorLocation[1]].getAreaProperty()!=-1)
+			cursorLocation[0]++;
+		if (input.equals("a") && cursorLocation[1]!=1 && area[cursorLocation[0]][cursorLocation[1]-1].getAreaProperty()!=-1)
+			cursorLocation[1]--;
+		if (input.equals("d") && cursorLocation[1]!=9 && area[cursorLocation[0]][cursorLocation[1]+1].getAreaProperty()!=-1)
+			cursorLocation[1]++;
+	}
+	public int[] AIenterWASD(String input, int[] cursorLoc)
+	{
+		if (input.equals("w") && cursorLoc[0]!=1 && area[cursorLoc[0]-1][cursorLoc[1]].getAreaProperty()!=-1)
+			cursorLoc[0]--;
+		if (input.equals("s") && cursorLoc[0]!=9 && area[cursorLoc[0]+1][cursorLoc[1]].getAreaProperty()!=-1)
+			cursorLoc[0]++;
+		if (input.equals("a") && cursorLoc[1]!=1 && area[cursorLoc[0]][cursorLoc[1]-1].getAreaProperty()!=-1)
+			cursorLoc[1]--;
+		if (input.equals("d") && cursorLoc[1]!=9 && area[cursorLoc[0]][cursorLoc[1]+1].getAreaProperty()!=-1)
+			cursorLoc[1]++;
+		return cursorLoc;
+		
+	}
+	public void refreshField()
+	{
+		for (int i=1;i<10 ;i++ )
+			for (int j=1;j<10 ;j++ )
+				area[i][j].chkUpdate();
+	}
+	public void printField()
+	{
+		clearscreen();
+		for (int i=1;i<10 ;i++ )
+		{
+			for (int j=1;j<10 ;j++ )
+			{
+				System.out.print(((cursorLocation[0]==i&&cursorLocation[1]==j)?"":" ")+area[i][j]+"  ");
+			}
+			System.out.println("\n\n");
+		}
+
+	}
+	public void defeatScreen()
+	{
+		clearscreen();
+		System.out.println("You are defeated!!");
+		System.out.println("Enter any key to continue...");
+		s.next();
+	}
+	public void victoryScreen()
+	{
+		clearscreen();
+		System.out.println("Victory!!");
+		MainMenu.player[1].rewardWith(expReward, moneyReward, stageReward);
+		System.out.println("You earned "+expReward);
+		System.out.println("You arned $"+moneyReward);
+		System.out.println("Enter any key to continue...");
+		s.next();
+	}
+	public void statScreen()
+	{
+	
+	}
+	public int additionalIncome(int turn)
+	{
+		int inc=0;
+		for (int i=1;i<10 ;i++ )
+		{
+			for (int j=1; j<10;j++ )
+			{
+				if (area[i][j].getOccupiedStatus()==turn && area[i][j].getAreaProperty()==1)
+					inc+=150;
+				if (area[i][j].getOccupiedStatus()==turn && area[i][j].getAreaProperty()==3)//mineField
+					inc+=100;
+			}
+		}
+		return inc;
+	}
+	public void moveUnit(int originalLocation, Area originalArea, int turn, int[] cursor)
+	{
+		area[cursor[0]][cursor[1]].modifyOccupyStatusTo(turn); // change occupication status
+		area[cursor[0]][cursor[1]].reinforceWith(originalArea.getArmyInArea(), originalArea.getArmySizeInArea()); // overwrite into new area
+		area[to2DLocation(originalLocation)[0]][to2DLocation(originalLocation)[1]].clearArmyInArea(); // delete original area
+	}
+	public void organizeFieldAfterBattle(int originalLocation, Battle battle, int turn, int[] cursor)
+	{
+		if (battle.aIsVictor())
+		{
+			area[cursor[0]][cursor[1]].defeatedBy(battle.getArmyA(), battle.getArmySizeA(), turn);// occupy
+			area[to2DLocation(originalLocation)[0]][to2DLocation(originalLocation)[1]].clearArmyInArea(); // delete original area
+		}
+		else
+		{
+			area[cursor[0]][cursor[1]].defeatedBy(battle.getArmyB(), battle.getArmySizeB(), area[cursor[0]][cursor[1]].getOccupiedStatus());//remain same
+			area[to2DLocation(originalLocation)[0]][to2DLocation(originalLocation)[1]].clearArmyInArea(); // delete original area
+		}
+
+	}
+	public boolean chkIfActionIsDone(int location, int[]actionDone)
+	{
+		for (int i=0;i<81 ;i++ )
+			if (actionDone[i]==location)
+				return true;
+		return false;
+	}
+	public int[] to2DLocation(int i)
+	{
+		int[] loc = new int[]{i/10,i%10};
+		return loc;
+	}
+	public static int countMeleeUnits(Unit[] army, int armySize)
+	{
+		int count=0;
+		for (int i=0;i<armySize ;i++ )
+		{
+			if (army[i].getMelee())
+				count++;
+		}
+		return count;
+	}
+	public static int countSupportUnits(Unit[] army, int armySize)
+	{
+		int count=0;
+		for (int i=0;i<armySize ;i++ )
+		{
+			if (army[i].getMelee())
+				count++;
+		}
+		return count;
+	}
+	public boolean eliminationStatusOf(int playerNum)
+	{
+		for (int i=1;i<=9 ;i++ )
+			for (int j=1;j<=9 ;j++ )
+				if (area[i][j].getOccupiedStatus()==playerNum)
+					return false;
+		return true;
+
+	}
+	public void executeAIscript(String encodedTrigger, int triggerNo)
+	{
+		if (!encodedTrigger.endsWith("//triggerWasTerminated"))
+		{
+			int code = decodeTrigger(encodedTrigger);
+			String[] tm = encodedTrigger.split("//");
+			String trigger = tm[1];
+			if (code==1)
+			{
+				clearscreen();
+				System.out.println(trigger);
+				printLine(14);
+				System.out.println("Enter any key to continue...");
+				s.next();
+			}
+			if (code==4)
+			{
+				victoryStatus=true;
+			}
+			if (code==5)
+			{
+				for (int i=1;i<=9 ;i++ )
+					for (int j=1;j<=9 ;j++ )
+						if (area[i][j].getOccupiedStatus()==Integer.parseInt(trigger))
+							area[i][j].modifyOccupyStatusTo(-1);
+			}
+			if (code==6) // AI all attack
+				AIscript=9;
+			if (code==7)
+				AIscript=1; // AI idle
+			if (code==8)
+				AIscript=2; // AI custom, standard
+			if (code==9)
+				AIscript=3; // AI campaign, easy
+
+
+
+
+
+
+
+			actionScript[triggerNo]+="//triggerWasTerminated";
+		}
+		
+	}
+	public void editCampaignMap(int[] setting, Player[] player)
+	{
+		int[]locSet;
+		for (int i=0;i<100 ;i++ )
+		{
+			try
+			{
+				locSet=to2DLocation(setting[i]/10000);
+				area[locSet[0]][locSet[1]].makeAreaUsable();
+				area[locSet[0]][locSet[1]].setAreaProperty((setting[i]/1000)%10);
+				area[locSet[0]][locSet[1]].modifyOccupyStatusTo((setting[i]/100)%10);
+				if ((setting[i]/100)%10==0)
+					area[locSet[0]][locSet[1]].modifyOccupyStatusTo(-1);
+				for (int k =0;k<(setting[i]/10)%10 ;k++ )
+					area[locSet[0]][locSet[1]].buildUnit(player[(setting[i]/100)%10], (setting[i]%10));
+			}
+			catch (Exception e){continue;}
+		}
+
+	}
+/*==========================================condition scripts=======================================================
+1001 = 1th, at 01th turn
+2155 = 2th, player 1 command unit at 55
+3205 = 3th, player 2 command 5 or less units in total
+4205 = 4th, player 2 command 5 or more units in total
+
+
+//action scripts
+"message//watch out! enemy forces are advancing!!" -> send transmission.
+"order//24566" -> set destination of player 2 unit at 45 location to 66
+"addWatt//1300" -> give 300 watt to player 1
+"victory//"// -> victory for player 1
+"defeat//1"// ->defeat for player 1
+"AIscript:AllInAttack//2" -> AIscript for player2
+"AIscript:Idle//2" -> Idle for player2
+"AIscript:CampaignEasy" -> campaign AI easy
+*/
+	public void campaignTriggerSetting(int[] condition, String[] action, int objective, int expReward, int moneyReward, int stageReward) // 0 is default for everything
+	{
+		conditionScript=condition;
+		actionScript=action;
+		this.missionObjective=missionObjective;
+		this.expReward=expReward;
+		this.moneyReward=moneyReward;
+		this.stageReward=stageReward;
+		//set trigger
+	}
+	public int decodeTrigger(String triggerCode)
+	{
+		int triggerMessage=0;
+		if (triggerCode.startsWith("message"))
+			triggerMessage+=1;
+		if (triggerCode.startsWith("order"))
+			triggerMessage+=2;
+		if (triggerCode.startsWith("addWatt"))
+			triggerMessage+=3;
+		if (triggerCode.startsWith("victory"))
+			triggerMessage+=4;
+		if (triggerCode.startsWith("defeat"))
+			triggerMessage+=5;
+		if (triggerCode.startsWith("AIscript:AllInAttack"))
+			triggerMessage+=6;
+		if (triggerCode.startsWith("AIscript:Idle"))
+			triggerMessage+=7;
+		if (triggerCode.startsWith("AIscript:Custom"))
+			triggerMessage+=8;
+		if (triggerCode.startsWith("AIscript:CampaignEasy"))
+			triggerMessage+=9;
+		if (triggerCode.startsWith("AIscript:CampaignStandard"))
+			triggerMessage+=10;
+		if (triggerCode.startsWith("AIscript:AreaTown"))
+			triggerMessage+=11;
+		return triggerMessage;
+
+
+	}
+//=======================================================AI Calculations=========================================================
+	public double[][] generateInfluenceMap(int playerNum)
+	{
+		
+		double[][] influenceMap = new double[10][10];
+		double valueAdded = 0;
+		for (int i=1;i<=9 ;i++ )
+			for (int j=1; j<=9; j++)
+			{
+
+				if (area[i][j].getOccupiedStatus()!=playerNum)			// if there is opponent, adds strength of army to surrounding areas, ranging 2
+				{
+					valueAdded = armyStrength(area[i][j].getArmyInArea(), area[i][j].getArmySizeInArea());
+					influenceMap[i][j]-=valueAdded;//range 0
+					for (int k=0;k<2 ;k++ ) //range 1
+					{
+						try
+						{influenceMap[i+1-k*2][j]-=valueAdded/1.5;}
+						catch (Exception e){continue;}
+					}
+					for (int k=0;k<2 ;k++ ) //range 1
+					{
+						try
+						{influenceMap[i][j-1+k*2]-=valueAdded/1.5;}
+						catch (Exception e){continue;}
+					}
+					for (int k=-2; k<=2; k++)//range 2
+						for (int n=-2+Math.abs(k); n<=2-Math.abs(k); n++)
+						{
+							try
+							{influenceMap[i+k][j+n]-=valueAdded/6;}
+							catch (Exception e){continue;}
+						}
+				}
+
+				else if (area[i][j].getOccupiedStatus()==playerNum)		//if there is player..
+				{
+					valueAdded = armyStrength(area[i][j].getArmyInArea(), area[i][j].getArmySizeInArea());
+					influenceMap[i][j]+=valueAdded;//range 0
+					for (int k=0;k<2 ;k++ ) //range 1
+					{
+						try
+						{influenceMap[i+1-k*2][j]+=valueAdded/1.5;}
+						catch (Exception e){continue;}
+					}
+					for (int k=0;k<2 ;k++ ) //range 1
+					{
+						try
+						{influenceMap[i][j-1+k*2]+=valueAdded/1.5;}
+						catch (Exception e){continue;}
+					}
+
+					for (int k=-2; k<=2; k++)//range 2
+						for (int n=-2+Math.abs(k); n<=2-Math.abs(k); n++)
+						{
+							try
+							{influenceMap[i+k][j+n]+=valueAdded/4;}
+							catch (Exception e){continue;}
+						}
+				}
+			}
+		/*for (int i=1;i<=9 ;i++ )// print influence map
+		{
+			for (int j=1;j<=9 ;j++ )
+			{
+				System.out.print(pad(""+(int)influenceMap[i][j],10));
+			}
+			System.out.println("");
+		}*/
+		return influenceMap;// if influenceMap is 0 or negitive, it is safe to move.
+	}
+	public void buildPhase(int turn, Area originalArea, int i, int j, int totalBuild)
+	{
+		boolean areaPropertyIsMain = ((area[i][j].getAreaProperty()==1 || area[i][j].getAreaProperty()==2) && area[i][j].getOccupiedStatus()==turn);
+		int buildCount=0;
+		int TimeBeforeBreakingLoop=500;
+		while (areaPropertyIsMain && totalBuild>buildCount)
+		{
+			TimeBeforeBreakingLoop--;
+			if (TimeBeforeBreakingLoop<=0)
+				break;
+			areaPropertyIsMain=false;
+			//System.out.println("Choose unit to build. (1 to 9). Enter 0 to escape");
+			int unitChoice = (int)random(1, 10);
+
+			/*for (int p=1;p<10 ;p++ )
+			{
+				if (MainMenu.player[turn].getWatt()>=MainMenu.player[turn].getConstructedUnit(unitChoice).getWatt() && MainMenu.player[turn].getConstructedUnit(unitChoice).getWatt()>0)
+				{
+					areaPropertyIsMain=true;
+				}
+			}*/
+			
+			if (MainMenu.player[turn].getWatt()>=MainMenu.player[turn].getConstructedUnit(unitChoice).getWatt())// check watt status
+			{
+				areaPropertyIsMain=true;
+				if (MainMenu.player[turn].getConstructedUnit(unitChoice).getHp()>0)// check unit availability status
+				{
+					if ( countMeleeUnits(originalArea.getArmyInArea(), originalArea.getArmySizeInArea())<10 ||countSupportUnits(originalArea.getArmyInArea(), originalArea.getArmySizeInArea())<10) // if unit supply limit doesn't exceed
+					{
+						area[AIcursor[0]][AIcursor[1]].buildUnit(MainMenu.player[turn] ,unitChoice);
+						MainMenu.player[turn].payWatt(MainMenu.player[turn].getConstructedUnit(unitChoice).getWatt());
+						buildCount++;
+					}
+				}
+			}
+		}
+	}
+	public int[] setTarget(int[] AIcursor, double[][] influenceMap, int turn)
+	{
+		int[] target = new int[2];
+		target[0] = AIcursor[0];
+		target[1] = AIcursor[1];
+
+		int[] targetList = new int[100]; // list of targets. List of strategical targets. Varies depending on goal of AI agent
+		int targetListCount=0; //  number of target lists
+		double[] scoreOfTargetsList = new double[100]; // score of targets listed
+		
+		
+		if (AIscript==1 || AIscript==0) // idle
+			return target;
+
+		System.out.println(AIscript);
+		for (int i=1;i<=9 ;i++ )
+				for (int j=1;j<=9 ;j++ )
+				{
+					if (AIscript==9) // all attack, targets closest enemy unit
+					{
+
+						System.out.println("test9");
+						//searches for groups of targets
+						if (area[i][j].getOccupiedStatus()!=turn && area[i][j].getOccupiedStatus()!=-1)
+						{
+							targetList[targetListCount] = i*10+j;
+							targetListCount++;
+						}
+					}
+
+					if (AIscript==2) // searches for strategical points and decides where to go depending on influence map. If influence map is positive, it looks for reinforcement from allies.
+					{
+						//searches for strategical targest including enemies and areas. If player influence in area+influece of target<0, except for areas where influence map is positive.
+						if (area[i][j].getAreaProperty()>0 ||  area[i][j].getAreaProperty()>=0 && area[i][j].getOccupiedStatus()>0 && area[i][j].getOccupiedStatus()!=turn)// || (area[i][j].getAreaProperty()>0 && area[i][j].getOccupiedStatus()!=turn))
+						{
+							if (influenceMap[AIcursor[0]][AIcursor[1]]<0 && (area[i][j].getOccupiedStatus()==turn || influenceMap[i][j]>10)) // decrease value to increase defensiveness
+							{
+								System.out.println("state = retreat"+area[i][j].getOccupiedStatus());
+								targetList[targetListCount] = i*10+j;
+								targetListCount++;
+							}
+							else if (area[i][j].getOccupiedStatus()!=turn && influenceMap[i][j]+influenceMap[AIcursor[0]][AIcursor[1]]>=0) // increase value to increase offensiveness
+							{
+								System.out.println("state = advance");
+								targetList[targetListCount] = i*10+j;
+								targetListCount++;
+							}
+							
+						}
+						if (influenceMap[i][j]<0 && area[i][j].getOccupiedStatus()==turn && area[i][j].getAreaProperty()==3)//emergency of being occupied
+						{
+							System.out.println("state = defend");
+							targetList[targetListCount] = i*10+j;
+							targetListCount++;
+						}
+					}
+
+
+					if (AIscript==3) //AIScript = 3, Campaign Easy
+					{
+						if (area[i][j].getAreaProperty()>0 ||  area[i][j].getAreaProperty()>=0 && area[i][j].getOccupiedStatus()>0 && area[i][j].getOccupiedStatus()!=turn)// || (area[i][j].getAreaProperty()>0 && area[i][j].getOccupiedStatus()!=turn))
+						{
+							if (influenceMap[i][j]+influenceMap[AIcursor[0]][AIcursor[1]]>=-500) // increase value to increase offensiveness
+							{
+								System.out.println("state = advance");
+								targetList[targetListCount] = i*10+j;
+								targetListCount++;
+							}
+						}
+						if (area[i][j].getOccupiedStatus()==turn && area[i][j].getAreaProperty()==3 && influenceMap[i][j]<300)// 2 ^
+						{
+							System.out.println("state = defend");
+							targetList[targetListCount] = i*10+j;
+							targetListCount++;
+						}
+					}
+
+
+
+
+				}
+		//set destination to nearest targets, (scoring system here : distance between location and target)
+		//for (int i=0;i<targetListCount ;i++ )
+		//	System.out.println(targetList[i]);
+		for (int i=0; i<targetListCount; i++)
+			scoreOfTargetsList[i] = getDistanceBetween(targetList[i], AIcursor);
+		try
+		{
+			target = to2DLocation(targetList[minOf(scoreOfTargetsList, targetListCount)]);
+		}
+		catch (Exception e){}
+		return target;
+	}
+
+
+	//pathfinding algorithm
+	public String moveToTarget(int[] target, int unitLocation) // this algorithm does not perform smooth or intelligent movement. only able to deal with linear obstacles.
+	{
+		/*	Algorithm
+			give value to nearest location, finds location has minimum value
+
+
+		*/
+		int loc1 = unitLocation%10;//6
+		int loc0 = unitLocation/10;//4
+		if (target[0]==loc0 && target[1]==loc1)
+			return "p";
+
+		int initialAction = -1;
+		int action[] = new int[10];
+		for (int i=0;i<10 ;i++ )
+			action[i]=-1;
+		double[] pathScore = new double[4];
+		double[] extendedPathScore = new double[4];
+		// basic search of path
+		pathScore = getPathScore(target, unitLocation);
+		initialAction=minOf(pathScore, 4);
+		action[0]=minOf(pathScore, 4);
+		//System.out.println(initialAction);
+		//extend search
+		for (int i=0;i<2 ;i++ )
+		{
+			extendedPathScore = getPathScore(target, loc0*10+(loc1-1+i*2));
+			if (extendedPathScore[minOf(extendedPathScore, 4)]-1>pathScore[initialAction])
+				pathScore[i]=100;
+		}
+		for (int i=0;i<2 ;i++ )
+		{
+			extendedPathScore = getPathScore(target, (loc0+1-i*2)*10+loc1);
+			if (extendedPathScore[minOf(extendedPathScore, 4)]-1>pathScore[initialAction])
+				pathScore[i+2]=100;
+		}
+
+		for (int i=0;i<2 ;i++ )
+		{
+			extendedPathScore = getPathScore(target, loc0*10+(loc1-1+i*2));
+			action[0] = (int)extendedPathScore[minOf(extendedPathScore, 4)];
+			if (initialAction==0 && action[1]==1)
+				pathScore[0]=100;
+			else if (initialAction==1 && action[1]==0)
+				pathScore[1]=100;
+		}
+		for (int i=0;i<2 ;i++ )
+		{
+			extendedPathScore = getPathScore(target, (loc0+1-i*2)*10+loc1);
+			action[0] = (int)extendedPathScore[minOf(extendedPathScore, 4)];
+			if (initialAction==2 && action[1]==3)
+				pathScore[2]=100;
+			else if (initialAction==3 && action[1]==2)
+				pathScore[3]=100;
+		}
+		//for (int i=0;i<4 ;i++ )
+		//	System.out.println(pathScore[i]);
+		// final decision
+		
+		initialAction=minOf(pathScore, 4);
+		if (initialAction==0)
+			return "a";
+		else if (initialAction==1)
+			return "d";
+		else if (initialAction==2)
+			return "s";
+		else if (initialAction==3)
+			return "w";
+		return "p";
+	}
+	public double[] getPathScore(int[] target, int unitLocation)
+	{
+		double[] score = new double[4];
+		int target1 = target[1];
+		int target0 = target[0];
+		int loc1 = unitLocation%10;//6
+		int loc0 = unitLocation/10;//4
+		for (int i=0;i<2 ;i++ )
+		{
+			try
+			{
+				score[i] = Math.abs(target1-loc1+1-i*2)+Math.abs(target0-loc0)+((Math.random()>0.5)?0.5:0);//to right, left (random 0.5 is given to give smoothness to some extent) Also bit of random help finding path in curved areas
+				if (area[loc0][loc1-1+i*2].getAreaProperty()<0)
+					score[i] = 100;
+				if (armyStrength(area[loc0][loc1-1+i*2].getArmyInArea(), area[loc0][loc1-1+i*2].getArmySizeInArea())-conditionToAvoidContact > armyStrength(area[loc0][loc1].getArmyInArea(), area[loc0][loc1].getArmySizeInArea()) && AIscript == 2)// for custom AI
+					score[i] = 100;
+			}
+			catch (Exception e){score[i] = 100;}
+			
+		}
+		for (int i=0;i<2 ;i++ )
+		{
+			try
+			{
+				score[i+2] = Math.abs(target1-loc1)+Math.abs(loc0-target0+1-i*2);//to bot, top
+				if (area[loc0+1-i*2][loc1].getAreaProperty()<0)
+					score[i+2] = 100;
+				if (armyStrength(area[loc0+1-i*2][loc1].getArmyInArea(), area[loc0+1-i*2][loc1].getArmySizeInArea())-conditionToAvoidContact > armyStrength(area[loc0][loc1].getArmyInArea(), area[loc0][loc1].getArmySizeInArea()) && AIscript == 2)// for custom AI
+					score[i] = 100;
+			}
+			catch (Exception e){score[i+2] = 100;}
+			
+		}
+		
+		return score;
+	}
+	public int getDistanceBetween(int[] target, int[] location)
+	{
+		return Math.abs(target[0]-location[0])+Math.abs(target[1]-location[1]);
+	}
+	public int getDistanceBetween(int decodedTarget, int[] location)
+	{
+		int[] target = to2DLocation(decodedTarget);
+		return Math.abs(target[0]-location[0])+Math.abs(target[1]-location[1]);
+	}
+	public static double armyStrength(Unit[] army, int armySize)
+	{
+		double strengthScore=0;
+		for (int i=0;i<armySize ;i++ )
+			strengthScore+=(army[i].getHp()>0?1:0)*(army[i].getHp()*(100+army[i].getStability()))/100.0+(army[i].getAtk())*(army[i].getSplash())*(army[i].getAcc()/100.0)*2;//+(army[i].getWatt()/8.0);
+
+		return strengthScore;
+	}
+	public double armyBalance(Unit[]armyA, int armySizeA, Unit[] armyB, int armySizeB) // army strength of army A over army B
+	{
+		
+		double balance=conOverOppArmy(armyA, armySizeA, armyB, armySizeB)/conOverOppArmy(armyB, armySizeB, armyA, armySizeA); // con balance between A,B
+		return balance*(armyStrength(armyA, armySizeA)/armyStrength(armyB, armySizeB));
+		//0.5=retreat, 0.7=stay away, 1 = consider fight, 1.5 = advance
+
+	}
+	public double conOverOppArmy(Unit[] armyA, int armySizeA, Unit[] armyB, int armySizeB) // average con of army A over army B
+	{
+		double conAoverB=0;
+		double conAve=0; // con average
+		for (int i=0;i<armySizeA ;i++ )
+		{
+			conAve=0;
+			for (int j=0; j<armySizeB; j++)
+				conAve+=Battle.con(armyA[i], armyB[j]);
+			conAoverB+=conAve/armySizeB;
+		}
+		conAoverB/=armySizeA;
+
+		return conAoverB;
+	}
+	public double resourceState()
+	{
+		return 1;
+	}
+	
+}

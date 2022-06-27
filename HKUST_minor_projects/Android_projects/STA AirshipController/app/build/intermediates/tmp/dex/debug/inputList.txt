@@ -1,2 +1,0 @@
-G:\Workspace\Android_workspace\STA AirshipController\app\build\intermediates\classes\debug
-G:\Workspace\Android_workspace\STA AirshipController\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-53537b0b5781b60d7a30b34e8b9e6923f1b094bc.jar

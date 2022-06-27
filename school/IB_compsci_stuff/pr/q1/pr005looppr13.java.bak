@@ -1,0 +1,28 @@
+import java.util.*;
+public class pr005looppr13	{
+	public static void main (String [] args)	{
+
+
+		/*
+		squares and cubes
+		*/
+		int times = 10;
+		int square = 0;
+		int cube = 0;
+		
+		System.out.println("square and cube of the tirst 10 numbers.");
+		int number = 1;
+		
+		for (int i = 0;i<times ;i++ )
+		{ square=number*number;
+			cube=number*number*number;
+			System.out.println(square+"  "+cube);
+			number++;
+		}
+
+	}
+}
+
+/*
+
+*/

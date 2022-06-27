@@ -1,0 +1,35 @@
+public class Pr43 extends IBIO  
+{
+  public static void main(String[] args)
+ {
+  int x = 0;
+  int i = j;
+  int j = 1;
+  
+  do
+  {
+   num = inputInt("Enter a number <1000= ");
+  } while (num>=1000);
+  
+  exit:
+  for(i=1; i<=num; i++)
+  {
+   for(j=1; j<= num; j++)
+   {
+    x = (i*i) + (j*j);
+    if (x==num)
+     break exit;
+   }
+  }
+  
+  if(x==num)
+  output(i + " and " + j + "squared and added together);
+ }
+}
+/*
+enter a number less than 1000
+6565
+enter a number less than 1000
+656
+16   20
+*/

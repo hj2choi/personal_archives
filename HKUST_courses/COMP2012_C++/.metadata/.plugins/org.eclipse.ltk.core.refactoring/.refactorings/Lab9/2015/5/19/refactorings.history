@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<session version="1.0">
-<refactoring comment="Move &apos;tree_not_bst.txt&apos; to &apos;Lab9&apos;" description="Move &apos;tree_not_bst.txt&apos; to &apos;Lab9&apos;" destination="/Lab9" element1="src/tree_not_bst.txt" flags="7" id="org.eclipse.ltk.core.refactoring.move.resources" resources="1" stamp="1430988011915" updateReferences="true"/>
-</session>

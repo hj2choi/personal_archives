@@ -1,8 +1,0 @@
-class  Shop
-{
-	final static Leg legParts[] = new Leg[100];// name, melee, stability, maxload, watt
-	final static Body bodyParts[] = new Body[100]; // name, hp, mp, type, load, watt
-	final static Weapon weaponParts[] = new Weapon[100];// name, atk, acc, splash, type, load, watt
-	static Unit unit[] = new Unit[10];
-
-}
