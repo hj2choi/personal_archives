@@ -240,9 +240,32 @@ Complex fulcrumPoint = Complex.FromRealNumber(23.0); // better. uses factory pat
 변수: snake_case
 
 ## 한 개념에는 한 이름만
+예를 들어, 똑같은 메서드를 클래스마다 fetch, retrieve, get 으로 제각각 부르면 혼란스럽다.  
+list.add(), list.insert(), list.append() 같은 경우,
+DeviceManager, ProtocolController,  DeviceDriver  같은 경우도 마찬가지.
 
-## 말장난을 하지 마라
+현실에서는 일관성을 지키기 어렵지만, eclipse, intelliJ같은 최신 IDE는 문맥에 맞는 단서를 제공해서 그거에 맞춰서 일관성있는 어휘를 써라.  
 
 ## 기술(전산, 알고리즘, 설계패턴, 수학) 영역에서 먼저, 그게 없을 때 문제 (도메인) 영역에서 가져온 이름을 사용하라
+모든 이름을 도메인 영역에서 가져오는 것은 현명하지 못함.  
+대체 누가 temperature를 temp로 줄여서 부르는가. ㅡㅡ;;;  
+프로그래머한테 친숙한 기술 개념을 먼저 차용하고 (JobQueue, AccountVisitor 등) 그 다음에 도메일 지식을 가져와라.  
 
 ## 의미있는 맥락을 추가하고 불필요한 맥락을 없애라
+firstName, lastName, street, state, zipcode라는 변수가 함께 정의되어 있을 때, 우리는 state라는 변수를 텍서스, 캘리포니아 등의 주 이름으로 금방 파악함.  
+하지만, 다른 메서드에서 갑자기 state라는 단어가 나오면, 이게 상태를 뜻하는 state인지 헷갈리게 됨.  
+명확성을 위해, state라는 이름의 변수를 Address라는 클래스 안에서 관리하던지,  addrFirstName, addrState 등으로 변수의 맥락을 제공할 것.  
+
+하지만, 명확한 맥락이 있을 경우에는 짧은 이름이 긴 이름보다 좋다.
+예, Address 클래스 안에서:
+| Good | Bad |
+| --- | ---|
+| MAC | accountAddress |
+| URI | customerAddress |
+
+## 마치면서: 답이 없다
+좋은 이름을 선택하려면 설명 능력과 함께 <b>문화적인 배경이 동일해야 함.</b>  
+우리가 이름 짓는 방법이 어려운 이유.  
+
+개발자가 이름을 리팩토링하는데 거부감을 갖는 경우가 있지만, 어차피 우리 대다수는 이름을 모두 암기하지 못함.  
+그러니 리팩토링 도구를 사용해서 이름을 개선해보자.  
