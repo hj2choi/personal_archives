@@ -1,5 +1,4 @@
 # Chapter 10: 클래스
-Disclaimer: 이번 챕터에서는 상속 개념에 대해서는 거의 언급되지 않음.
 
 ## Basic OOP design principles
 From <i>Agile Software Development: Principles, Patterns, and Practices</i>
@@ -7,7 +6,7 @@ From <i>Agile Software Development: Principles, Patterns, and Practices</i>
 - <b>SRP (Single Responsibility Principle)</b>: There should never be more than one reason for a class to change.
 - <b>OCP (Open Closed Principle)</b>: Software entities should be open for extension, but closed for modification.
 - LSP (Liskov Substitution Principle): objects of a superclass should be replaceable with objects of its subclasses.
-- <b>ISP (Interface Segregation Principle)</b>: Clients should not be forced to depend upon interfaces that they do not use.
+- ISP (Interface Segregation Principle): Clients should not be forced to depend upon interfaces that they do not use.
 - DIP (Dependency Inversion Principle): Depend upon abstractions, not concretions
 
 ## 클래스 체계
