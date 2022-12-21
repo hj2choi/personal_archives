@@ -58,3 +58,20 @@ and more...
 수치 데이터는 머신러닝 모델의 입력으로 직접 투입할 수 있지만, 다른 데이터는 모델이 이해할 수 있는 수치 형식으로 변환하기 위한 다양한 전처리(Preprocessing / Feature Engineering)가 필요하다.  
   
 Feature Engineering을 거친 후에는 데이터 검증을 진행한다. 데이터에 대한 통계를 계산하고, 스키마를 이해해 데이터의 드리프트, 학습 제공 편향, 그리고 각 특징의 불균형 여부 등을 식별한다.  
+
+
+#### Machine Learning Process
+depending on a context, the model serves by either doing prediction or inference on data.
+  
+데이터 수집 -> 데이터 검증 -> 데이터 준비 -> 모델 학습 -> 모델 평가 -> 모델 검증 -> 모델 서빙 -> 최종 UI
+
+#### Related Field of Expertise
+- Data Scientist: 데이터셋 수집, 해석, 처리를 수행한다. 통계적, 탐색적 분석을 수행하고 머신러닝 모델을 가장 먼저 구축함.
+- Data Engineer: 조직의 데이터를 위한 인프라와 워크플로우를 관리한다. 데이터 수집, 파이프라인 구축, 저장 및 전송을 담당함.
+- Machine Learning Engineer: ML모델을 가져와서 학습, 배포와 관련된 인프라와 운영을 관리함. 모델 업데이트, 버전 관리, 예측 서빙을 처리하는 production system을 구축함.
+- Research Scientist: 새로운 알고리즘을 찾고 개발하는 역할을 함. 모델 아키텍쳐, NLP, Vision, hyperparameter tuning 등의 하위 분야 포함. 새로운 ML 접근방식을 프로토타이핑하고 평가함.
+- Data Analyst: 데이터를 분석하고 통찰한 내용을 뽑아낸 후, 조직에 공유. Business intelligence 도구를 이용하여 데이터를 시각화하고 결과를 공유한다. 제품 팀과 협업하여 데이터에서 얻을 수 있는 통찰력이 어떻게 비즈니스 문제를 해결하고 가치를 창출하는지에 대해 고민한다.
+- Developer: 최종 사용자가 ML 모델에 접근할 수 있는 프로덕션 시스템 구축을 담당한다. 웹/앱을 통해 쿼리를 날리고 예측을 반환받는 API를 설계한다.
+
+
+
