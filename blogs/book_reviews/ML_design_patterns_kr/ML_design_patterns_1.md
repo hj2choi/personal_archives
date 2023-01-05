@@ -60,12 +60,12 @@ and more...
 Feature Engineering을 거친 후에는 데이터 검증을 진행한다. 데이터에 대한 통계를 계산하고, 스키마를 이해해 데이터의 드리프트, 학습 제공 편향, 그리고 각 특징의 불균형 여부 등을 식별한다.  
 
 
-#### Machine Learning Process
+#### 1.3.3 Machine Learning Process
 depending on a context, the model serves by either doing prediction or inference on data.
   
 데이터 수집 -> 데이터 검증 -> 데이터 준비 -> 모델 학습 -> 모델 평가 -> 모델 검증 -> 모델 서빙 -> 최종 UI
 
-#### Related Field of Expertise
+#### 1.3.5 Related Field of Expertise
 - Data Scientist: 데이터셋 수집, 해석, 처리를 수행한다. 통계적, 탐색적 분석을 수행하고 머신러닝 모델을 가장 먼저 구축함.
 - Data Engineer: 조직의 데이터를 위한 인프라와 워크플로우를 관리한다. 데이터 수집, 파이프라인 구축, 저장 및 전송을 담당함.
 - Machine Learning Engineer: ML모델을 가져와서 학습, 배포와 관련된 인프라와 운영을 관리함. 모델 업데이트, 버전 관리, 예측 서빙을 처리하는 production system을 구축함.
@@ -73,5 +73,27 @@ depending on a context, the model serves by either doing prediction or inference
 - Data Analyst: 데이터를 분석하고 통찰한 내용을 뽑아낸 후, 조직에 공유. Business intelligence 도구를 이용하여 데이터를 시각화하고 결과를 공유한다. 제품 팀과 협업하여 데이터에서 얻을 수 있는 통찰력이 어떻게 비즈니스 문제를 해결하고 가치를 창출하는지에 대해 고민한다.
 - Developer: 최종 사용자가 ML 모델에 접근할 수 있는 프로덕션 시스템 구축을 담당한다. 웹/앱을 통해 쿼리를 날리고 예측을 반환받는 API를 설계한다.
 
+### 1.4 Challenges in Machine Learning
+#### 1.4.1 Data Quality
+```
+Garbage in, garbage out
+```
+Machine Learning Models are only as good as their data. And there are four main factors that determine the quality of data.
+1. Completeness: whether data includes all the information that is relevant to the problem being solved. e.g) missing important fields values, such as only having categories for 10 major countries where a person is from, instead of all existing countries in the world.
+2. Accuracy: whether data reflects the true state of the real-world problem. e.g) incorrectly labeled data.
+3. Timeliness: whether data is collected and made available in a timely manner. Outdated data may not accurately reflect the current state of the problem.
+4. Relevance: whether data is directly related to the problem being solved. e.g) trying to predict housing prices with grocery store purchase history.
+5. Consistency: whether data follows the same standards and conventions, e.g)  people have different opinion on whether a news article have positive or negative tone.
+  
+In addition, data integrity, representativeness and validity are also important factors to consider when designing ML models.
 
+#### 1.4.3 Data Drift
+data characteristics in ML models can change drastically over time. Distribution of the data usually differ from the distribution from past.  
+  
+For instance, number of tropical storms recorded by NOAA has increased 5 fold during 1990 to 2000. That's mainly because of the technical improvement of observation instruments.
 
+#### 1.4.5 Various objectives
+Successful implementation of ML models differ by their actual usages.  
+  
+For instance, in fraud transaction detection system, data scientists might conclude that false positive cases cause much more cost than false negative cases.  
+Then, research scientists should opt for maximizing precision over recall.
